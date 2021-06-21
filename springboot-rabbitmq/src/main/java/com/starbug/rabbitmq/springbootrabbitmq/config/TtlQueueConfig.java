@@ -23,6 +23,7 @@ public class TtlQueueConfig {
     //普通对列名
     public static final String QUEUE_A = "QA";
     public static final String QUEUE_B = "QB";
+    public static final String QUEUE_C = "QC";
     //死信队列名
     public static final String DEAD_LETTER_QUEUE = "QD";
 
@@ -65,6 +66,17 @@ public class TtlQueueConfig {
         return QueueBuilder.durable(QUEUE_B).withArguments(arguments).build();
     }
 
+    @Bean
+    public Queue queueC() {
+        Map<String, Object> arguments = new HashMap();
+        //设置死信队列
+        arguments.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
+        //设置死信RoutingKey
+        arguments.put("x-dead-letter-routing-key", "YD");
+        //这个队列没有时间,在消息发送的时候设置时间
+        return QueueBuilder.durable(QUEUE_C).withArguments(arguments).build();
+    }
+
     //死信队列
     @Bean
     public Queue queueD() {
@@ -80,6 +92,11 @@ public class TtlQueueConfig {
     @Bean
     public Binding queueBBindingX(Queue queueB, Exchange xExchange) {
         return BindingBuilder.bind(queueB).to(xExchange).with("XB").noargs();
+    }
+
+    @Bean
+    public Binding queueCBindingX(Queue queueC, Exchange xExchange) {
+        return BindingBuilder.bind(queueC).to(xExchange).with("XC").noargs();
     }
 
     //绑定死信队列和死信交换机

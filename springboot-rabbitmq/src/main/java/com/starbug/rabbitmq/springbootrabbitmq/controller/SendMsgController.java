@@ -62,7 +62,6 @@ public class SendMsgController {
                     msg.getMessageProperties().setDelay(delayTime);
                     return msg;
                 });
-
     }
 
 }

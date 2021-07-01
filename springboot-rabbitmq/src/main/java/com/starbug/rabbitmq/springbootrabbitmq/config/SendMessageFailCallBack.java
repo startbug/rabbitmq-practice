@@ -49,6 +49,7 @@ public class SendMessageFailCallBack implements RabbitTemplate.ConfirmCallback, 
         if (ack) {
             log.info("交换机已经收到ID为{}的消息，内容为{}", correlationData.getId(), msg);
         } else {
+            //无法发送到交换机
             log.info("交换机还没收到ID为{}的消息，内容为{}，原因为{}", correlationData.getId(), msg, cause);
         }
     }
@@ -56,6 +57,7 @@ public class SendMessageFailCallBack implements RabbitTemplate.ConfirmCallback, 
     /**
      * 可以在消息传递过程中不可达目的地时将消息会退给生产者
      * 只有在不可达目的地的时候，才会回退（也就是说，只有失败了，才会执行该方法）
+     * 无法路由到队列
      **/
     @Override
     public void returnedMessage(ReturnedMessage returned) {

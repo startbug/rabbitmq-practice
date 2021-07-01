@@ -8,16 +8,18 @@ import org.springframework.stereotype.Component;
 
 /**
  *  @Author Starbug
- *  @Date 2021/6/25 23:15
+ *  @Date 2021/6/26 21:08
+ *  报警消费者,备份交换机会将消息发送到该队列中
  */
 @Slf4j
 @Component
-public class Consumer {
+public class WarningConsumer {
 
-    @RabbitListener(queues = ConfirmConfig.CONFIRM_QUEUE_NAME)
-    public void receiveConfirm(Message message) {
+    //接受报警消息
+    @RabbitListener(queues = ConfirmConfig.WARNING_QUEUE)
+    public void receiveWarningMsg(Message message) {
         String msg = new String(message.getBody());
-        log.info("接收到消息:{}", msg);
+        log.error("报警不可路由的消息:{}", msg);
     }
 
 }
